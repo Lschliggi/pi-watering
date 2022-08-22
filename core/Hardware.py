@@ -127,7 +127,7 @@ class ZoneProgramRunner:
             #
             sql = """select program_id, zone_id, start_time from zone_programs where
                     time('now','localtime') > time(start_time)
-                    and time('now','localtime') < time(start_time, '+'||duration||' minute')
+                    and time('now','localtime') < time(start_time, '+'||duration||' second')
                     and ( last_run is null or date('now') >= datetime(last_run, '+'||day_interval||' days') )
                     and active = 1 and running = 0"""
 
@@ -145,7 +145,7 @@ class ZoneProgramRunner:
         def end_program(self):
 
             sql = """select program_id, zone_id, start_time, run_once from zone_programs where
-                    (time('now','localtime') > time(start_time, '+'||duration||' minute')) and
+                    (time('now','localtime') > time(start_time, '+'||duration||' second')) and
                     active = 1 and running = 1"""
             cursor = self.db.query(sql)
 
