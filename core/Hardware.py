@@ -128,7 +128,7 @@ class ZoneProgramRunner:
             sql = """select program_id, zone_id, start_time from zone_programs where
                     time('now','localtime') > time(start_time)
                     and (time('now','localtime') < time(start_time, '+'||duration||' second'))
-                    and ( last_run is null or date('now') >= datetime(last_run, '+'||day_interval||' days') )
+                    and ( last_run is null or date('now') >= date(last_run, '+'||day_interval||' days') )
                     and active = 1 and running = 0"""
 
             cursor = self.db.query(sql)
@@ -227,7 +227,7 @@ class ZoneProgramRunner:
         # Change the program running status
         def update_program_status(self,status,program_id):
 
-            sql = """update zone_programs set last_run = datetime('now'), running = ? where program_id = ?"""
+            sql = """update zone_programs set last_run = date('now'), running = ? where program_id = ?"""
 
             self.db.query(sql, (int(status), int(program_id)))
 
